@@ -1,0 +1,481 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AnimateDiff</title>
+<link href="./AnimateDiff_files/style.css" rel="stylesheet">
+<script type="text/javascript" src="./AnimateDiff_files/jquery.mlens-1.0.min.js"></script> 
+<script type="text/javascript" src="./AnimateDiff_files/jquery.js"></script>
+
+
+<style>
+  p.serif{
+    font-family:"Times New Roman", Times, serif;
+  }
+  p.sansserif{
+    font-family: Arial, Helvetica, sans-serif;
+  }
+</style>
+  
+</head>
+
+<body>
+<div class="content">
+  <h1><strong>AnimateDiff: Animate Your Personalized Text-to-Image Diffusion Models without Specific Tuning</strong></h1>
+  <p id="authors" class="serif">
+    <a href="mailto:guoyuwei@pjlab.org.cn">Yuwei Guo<sup>1,2</sup></a>
+    <a href="https://ceyuan.me/">Ceyuan Yang<sup>1*</sup></a>
+    <a href="https://anyirao.com/">Anyi Rao<sup>3</sup></a>
+    <a href="https://wyhsirius.github.io/">Yaohui Wang<sup>1</sup></a>
+    <a href="http://mmlab.siat.ac.cn/yuqiao/index.html">Yu Qiao<sup>1</sup></a>
+    <a href="http://dahua.site/">Dahua Lin<sup>1,2</sup></a>
+    <a href="https://daibo.info/">Bo Dai<sup>1</sup></a>
+    <br>
+    <a style="font-size: 0.7em"><sup>*</sup>Corresponding Author.</a>
+    <br>
+    <span style="font-size: 0.8em; margin-top: 0.5em">
+      <a><sup>1</sup>Shanghai AI Laboratory</a>
+      <a><sup>2</sup>The Chinese University of Hong Kong</a>
+      <a><sup>3</sup>Stanford University</a>
+    </span>
+  </p>
+
+  <font size="+1">
+    <p style="text-align: center;" class="serif">
+      <a href="https://arxiv.org/abs/2307.04725" target="_blank" style="font-weight: bold;">[Arxiv Report]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="https://github.com/guoyww/animatediff/" target="_blank" style="font-weight: bold;">[Github]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="#bibtex" style="font-weight: bold;">[BibTeX]</a>
+    </p><br>
+  </font>
+
+  <font size="+1">
+    <p class="serif" style="color: red; font-weight: bold">Click to Play the Animations!</p>
+  </font>
+
+  <div class="row">
+    <div class="col">
+      <video class="clickplay" width="100%">
+        <source src="animations/teaser/ani_01.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="col">
+      <video class="clickplay" width="100%">
+        <source src="animations/teaser/ani_02.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="col">
+      <video class="clickplay" width="100%">
+        <source src="animations/teaser/ani_03.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <video class="clickplay" width="100%">
+        <source src="animations/teaser/ani_04.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="col">
+      <video class="clickplay" width="100%">
+        <source src="animations/teaser/ani_05.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="col">
+      <video class="clickplay" width="100%">
+        <source src="animations/teaser/ani_06.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <p style="text-align: left; font-size: 18px; margin: 10px;" class="serif">
+    Generated with CivitAI models:
+    <a href="https://civitai.com/models/30240/toonyou">ToonYou</a>
+    <a href="https://civitai.com/models/22922/lyriel">Lyriel</a>
+    <a href="https://civitai.com/models/43331/majicmix-realistic">majicMIX Realistic</a>
+    <a href="https://civitai.com/models/66347/rcnz-cartoon-3d">RCNZ Cartoon 3d</a>
+  </p>
+
+</div>
+
+<div class="content">
+  <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">Methodology</p>
+  <p style="font-size: 1.2em" class="serif">
+    With the advance of text-to-image models (e.g., Stable Diffusion) and corresponding personalization techniques (e.g., LoRA and DreamBooth), it is possible for everyone to manifest their imagination into high-quality images with an affordable cost.
+    Subsequently, there is a great demand for image animation techniques to further combine generated stationary images with motion dynamics.
+    In this project, we propose an effective framework to animate most of existing personalized text-to-image models once for all, saving the efforts in model-specific tuning.<br><br>
+
+    At the core of the proposed framework is to append a newly-initialized motion modeling module to the frozen based text-to-image model, and train it on video clips thereafter to distill a reasonable motion prior. Once trained, by simply injecting this motion modeling module, all personalized versions derived from the same base one readily become text-driven models that produce diverse and personalized animated images.
+  </p>
+  <img class="summary-img" src="figs/framework.jpg" style="width:100%;"> <br>
+</div>
+
+
+<div class="content">
+  <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">Gallery</p>
+  <p style="font-size: 1.2em" class="serif">
+    Here we demonstrate best-quality animations generated by models injected with the motion modeling module in
+    our framework.<br>
+    <span style="color: red; font-weight: bold">Click to play the following animations.</span>
+    <!-- We recommend users visit our github repo and play with our pre-trained weights. -->
+  </p>
+
+  <div class="row">
+    <div class="col-gallery">
+      <video class="clickplay" width="100%">
+        <source src="animations/model_01/01.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="col-gallery">
+      <video class="clickplay" width="100%">
+        <source src="animations/model_01/02.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="col-gallery">
+      <video class="clickplay" width="100%">
+        <source src="animations/model_01/03.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="col-gallery">
+      <video class="clickplay" width="100%">
+        <source src="animations/model_01/04.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/30240/toonyou">ToonYou</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_02/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_02/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_02/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_02/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/4468/counterfeit-v30">Counterfeit V3.0</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_03/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_03/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_03/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_03/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/4201/realistic-vision-v20">Realistic Vision V2.0</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_04/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_04/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_04/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_04/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/43331/majicmix-realistic">majicMIX Realistic</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_05/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_05/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_05/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_05/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/66347/rcnz-cartoon-3d">RCNZ Cartoon</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_06/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_06/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_06/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_06/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/66347/rcnz-cartoon-3d">RCNZ Cartoon</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_07/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_07/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_07/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_07/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/33194/pallass-catmanul-lora">TUSUN</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_08/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_08/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_08/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_08/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/33208/filmgirl-film-grain-lora-and-loha">FilmVelvia</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_09/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_09/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_09/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_09/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/54233/ghiblibackground">GHIBLI Background</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_10/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_10/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_10/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/model_10/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/73305/zyd232s-ink-style">InkStyle</a></p>
+  </div>
+</div>
+
+<div class="content">
+  <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">Supplement</p>
+  <p style="font-size: 1.2em" class="serif">
+    Here we show results using the same prompt with the same model, demonstrating that our method dose not break the diversity of the original model.
+    <span style="color: red; font-weight: bold">Click to play the following animations.</span>
+  </p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/same_prompt_01/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/same_prompt_01/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/same_prompt_01/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/same_prompt_01/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/30240/toonyou">ToonYou</a></p>
+
+  <div class="row">
+    <div class="row">
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/same_prompt_02/01.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/same_prompt_02/02.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/same_prompt_02/03.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%">
+          <source src="animations/same_prompt_02/04.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <p class="serif" style="font-size: 1.2em; text-align: left; margin: 5px; margin-bottom: 20px">Model: <a href="https://civitai.com/models/22922/lyriel">Lyriel</a>
+  </p>
+
+</div>
+
+
+</div>
+
+<div class="content" id="bibtex">
+  <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">BibTeX</p>
+  <!-- <span class="serif" style="color:red;"> (Coming Soon)</span> -->
+  <code> @misc{guo2023animatediff,<br>
+  &nbsp;&nbsp;title={AnimateDiff: Animate Your Personalized Text-to-Image Diffusion Models without Specific Tuning},<br>
+  &nbsp;&nbsp;author={Yuwei Guo, Ceyuan Yang, Anyi Rao, Yaohui Wang, Yu Qiao, Dahua Lin, Bo Dai},<br>
+  &nbsp;&nbsp;booktitle={arXiv preprint arxiv:2307.04725},<br>
+  &nbsp;&nbsp;year={2023},<br>
+  &nbsp;&nbsp;archivePrefix={arXiv},<br>
+  &nbsp;&nbsp;primaryClass={cs.CV}<br>
+  } </code> 
+</div>
+
+<div class="content">
+  <p class="serif">
+    Project page template is borrowed from <a href="https://dreambooth.github.io/">DreamBooth</a>.
+  </p>
+</div>
+
+</body>
+
+<script>
+var videos = document.getElementsByClassName("clickplay");
+for (var i = 0; i < videos.length; i++) {
+  videos[i].addEventListener("click", function() {
+    this.play();
+  });
+  videos[i].addEventListener("ended", function() {
+    this.pause();
+    this.currentTime = 0;
+  });
+}
+</script>
+
+</html>
